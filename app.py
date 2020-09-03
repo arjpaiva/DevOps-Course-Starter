@@ -10,14 +10,14 @@ def favicon():
     return app.send_static_file('web/favicon.ico')
 
 
-@app.route('/items')
+@app.route('/')
 def index():
     items = session.get_items()
     items.sort(key=get_status)
     return render_template('index.html', items=items)
 
 
-@app.route('/items', methods=['POST'])
+@app.route('/', methods=['POST'])
 def add_item():
     title = request.form['title']
     items = session.get_items()
@@ -34,13 +34,13 @@ def add_item():
     return render_template('index.html', items=items)
 
 
-@app.route('/items/<id>')
+@app.route('/<id>')
 def get_item(id):
     session.get_item(id)
     return index()
 
 
-@app.route('/items/<id>', methods=['POST'])
+@app.route('/<id>', methods=['POST'])
 def mark_as_completed(id):
     print('index to complete: ' + str(id))
     item = session.get_item(id)
@@ -50,15 +50,15 @@ def mark_as_completed(id):
     return redirect(url_for('index'))
 
 
-@app.route('/items/<id>/delete', methods=['POST'])
-@app.route('/items/<id>', methods=['DELETE'])
+@app.route('/<id>/delete', methods=['POST'])
+@app.route('/<id>', methods=['DELETE'])
 def delete_item(id):
     session.delete_item(id)
     return redirect(url_for('index'))
 
 
-@app.route('/items', methods=['DELETE'])
-@app.route('/items/delete', methods=['POST'])
+@app.route('/', methods=['DELETE'])
+@app.route('/delete', methods=['POST'])
 def delete_all_items():
     session.delete_all()
     return redirect(url_for('index'))

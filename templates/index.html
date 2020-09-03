@@ -54,7 +54,7 @@
             </div>
             {% if items is defined and items %}
                 <div class="float-right col-2">
-                    <form action="/items/delete" method="POST">
+                    <form action="/delete" method="POST">
                         <button type="submit" id="delete" class="btn btn-danger float-right">Delete All Items</button>
                     </form>
                 </div>
@@ -62,7 +62,7 @@
         </div>
     </div>
     <div class="modal fade" id="modalAddItemForm" role="dialog">
-        <form action="/items" method="post">
+        <form action="/" method="post">
             <div class="modal-dialog modal-sm">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -85,13 +85,13 @@
     <script type="text/javascript">
         function complete_item(id) {
             var form = document.getElementById("complete_item");
-            form.action = '/items/' + id
+            form.action = '/' + id
             form.submit();
         }
 
         function delete_item(id) {
             var form = document.getElementById("delete_item");
-            form.action = '/items/' + id + '/delete'
+            form.action = '/' + id + '/delete'
             form.submit();
         }
     </script>
