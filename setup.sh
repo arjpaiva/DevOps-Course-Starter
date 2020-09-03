@@ -7,5 +7,5 @@ python -m venv --clear env
 pip install --upgrade pip
 pip install -r requirements.txt
 
-# Create a .venv file from the .venv.template
+# Create a .env file from the .env.template
 cp -n .env.template .env
