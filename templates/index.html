@@ -17,26 +17,37 @@
                             <div class="col-8">{{ item.title }}</div>
                             <div class="col-2">
                                 {% if item.status == 'Not Started' %}
-                                    <form id="complete_item" method="post" action="/{{ item.id }}">
-                                        <button class="badge badge-danger badge-pill red shadow-none"
-                                                style="border: none">
-                                            {{ item.status }}
-                                        </button>
-                                    </form>
+                                    <button class="badge badge-danger badge-pill red shadow-none"
+                                            style="border: none">
+                                        {{ item.status }}
+                                    </button>
                                 {% elif item.status != 'Not Started' %}
                                     <button class="badge badge-success badge-pill" style="border: none">
                                         {{ item.status }}
                                     </button>
                                 {% endif %}
                             </div>
-                            <div class="col-2 ">
+                            <div class="col-1">
                                 <form id="delete_item" method="post" action="/{{ item.id }}/delete">
-                                    <button class="btn bg-transparent"
-                                            style="border: none">
+                                    <button class="btn bg-transparent" style="border: none">
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </button>
-                                    </a>
                                 </form>
+                            </div>
+                            <div class="col-1">
+                                {% if item.status == 'Not Started' %}
+                                    <form id="complete_item" method="post" action="/{{ item.id }}">
+                                    <button class="btn bg-transparent" style="border: none">
+                                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                                    </button>
+                                    </form>
+                                {% elif item.status != 'Not Started' %}
+                                    <form id="move_not_started_item" method="post" action="/{{ item.id }}">
+                                        <button class="btn bg-transparent" style="border: none">
+                                            <i class="fa fa-square" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
