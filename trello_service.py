@@ -30,6 +30,22 @@ def get_cards():
     return cards
 
 
+def get_card(card_id):
+
+    card_id_url = 'https://api.trello.com/1/cards/{0}'.format(card_id)
+    get_card_response = requests.get(card_id_url, params={'key': trello['KEY'], 'token': trello['TOKEN']})
+
+    if get_card_response.status_code != 200:
+        logging.error('While trying to get all cards for board [{0}] - status code {1}'
+                      .format(trello['BOARD_ID'], get_card_response.status_code))
+
+    card_json = get_card_response.json()
+    status = 'Not Started' if card_json['idList'] == trello['NOT_STARTED_LIST_ID'] else 'Completed'
+    card = b.Card(card_json['id'], card_json['name'], status)
+
+    return card
+
+
 def create_card(card_title):
     logging.debug('Create card with title [{}]'.format(card_title))
     create_card_url = 'https://api.trello.com/1/cards'
@@ -46,11 +62,13 @@ def create_card(card_title):
 
 def update_card(card_id):
     logging.debug('Update status from \'Not Started\' to \'Completed\' of the card with id [{}]'.format(card_id))
+    card = get_card(card_id)
+    list_id = trello['COMPLETED_LIST_ID'] if card.status == 'Not Started' else trello['NOT_STARTED_LIST_ID']
 
     update_card_url = 'https://api.trello.com/1/cards/{0}'.format(card_id)
     response = requests.put(update_card_url, params={'key': trello['KEY'],
                                                      'token': trello['TOKEN'],
-                                                     'idList': trello['COMPLETED_LIST_ID']})
+                                                     'idList': list_id})
 
     if response.status_code != 200:
         logging.error('While trying to update card with id [{0}] - response status code {1}'
