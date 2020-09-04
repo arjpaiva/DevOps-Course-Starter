@@ -7,19 +7,22 @@ config = configparser.ConfigParser()
 config.read('.cfg')
 trello = config['TRELLO']
 
-not_started_list_id = '5f510df87d0a156d2b3fd79c'
-completed_list_id = '5f510df8ae98967588c8a47c'
-
 
 def get_cards():
     all_cards_url = 'https://api.trello.com/1/boards/{0}/cards'.format(trello['BOARD_ID'])
 
     response = requests.get(all_cards_url, params={'key': trello['KEY'], 'token': trello['TOKEN']})
+
+    if response.status_code != 200:
+        logging.error('While trying to get all cards for board [{0}] - status code {1}'
+                      .format(trello['BOARD_ID'], response.status_code))
+        return []
+
     card_json = response.json()
 
     cards = []
     for card_json in card_json:
-        status = 'Not Started' if card_json['idList'] == '5f510df87d0a156d2b3fd79c' else 'Completed'
+        status = 'Not Started' if card_json['idList'] == trello['NOT_STARTED_LIST_ID'] else 'Completed'
 
         card = b.Card(card_json['id'], card_json['name'], status)
         cards.append(card)
@@ -28,17 +31,17 @@ def get_cards():
 
 
 def create_card(card_title):
-    print(card_title)
+    logging.debug('Create card with title [{}]'.format(card_title))
     create_card_url = 'https://api.trello.com/1/cards'
 
     response = requests.post(create_card_url, params={'key': trello['KEY'],
                                                       'token': trello['TOKEN'],
-                                                      'idList': not_started_list_id,
+                                                      'idList': trello['NOT_STARTED_LIST_ID'],
                                                       'name': card_title})
 
     if response.status_code != 200:
-        print('ERROR: While trying to create card with title [{0}] - status code {1}'
-              .format(card_title, response.status_code))
+        logging.error('While trying to create card with title [{0}] - status code {1}'
+                      .format(card_title, response.status_code))
 
 
 def update_card(card_id):
@@ -47,7 +50,7 @@ def update_card(card_id):
     update_card_url = 'https://api.trello.com/1/cards/{0}'.format(card_id)
     response = requests.put(update_card_url, params={'key': trello['KEY'],
                                                      'token': trello['TOKEN'],
-                                                     'idList': completed_list_id})
+                                                     'idList': trello['COMPLETED_LIST_ID']})
 
     if response.status_code != 200:
         logging.error('While trying to update card with id [{0}] - response status code {1}'
@@ -68,8 +71,8 @@ def delete_card(card_id):
 def archive_all_card():
     logging.debug('Archive all cards from the board')
     url = 'https://api.trello.com/1/lists/{0}/archiveAllCards'
-    archive_card_url_not_started_list = url.format(not_started_list_id)
-    archive_card_url_completed = url.format(completed_list_id)
+    archive_card_url_not_started_list = url.format(trello['NOT_STARTED_LIST_ID'])
+    archive_card_url_completed = url.format(trello['COMPLETED_LIST_ID'])
 
     response_not_started = requests.post(archive_card_url_not_started_list,
                                          params={'key': trello['KEY'], 'token': trello['TOKEN']})

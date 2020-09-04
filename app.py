@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import session_items as session
 import trello_service as trello
+import logging
 
 app = Flask(__name__)
 app.config.from_object('flask_config.Config')
@@ -29,7 +30,7 @@ def add_item():
     for card in cards:
         if card.title == title:
             # todo show error on front end
-            print('A card with the title ' + title + ' already exists.')
+            logging.error('A card with the title ' + title + ' already exists.')
             return render_template('index.html', items=cards)
 
     trello.create_card(title)
@@ -60,9 +61,7 @@ def delete_item(card_id):
 @app.route('/', methods=['DELETE'])
 @app.route('/delete', methods=['POST'])
 def delete_all_items():
-    print('before delete')
     trello.archive_all_card()
-    print('after delete')
 
     return redirect(url_for('index'))
 
