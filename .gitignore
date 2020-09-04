@@ -114,6 +114,7 @@ env/
 
 ### Configuration files ###
 .env
+.cfg
 
 ### Idea folder ###
 .idea/
