@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for
-import session_items as session
 import trello_service as trello
 import logging
 
@@ -25,24 +24,18 @@ def add_item():
     cards = trello.get_cards()
 
     if title == '':
-        return render_template('index.html', items=cards)
+        return redirect('/')
 
     for card in cards:
         if card.title == title:
             # todo show error on front end
             logging.error('A card with the title ' + title + ' already exists.')
-            return render_template('index.html', items=cards)
+            return redirect('/')
 
     trello.create_card(title)
-    cards = get_and_sort_cards_by_status()
+    # cards = get_and_sort_cards_by_status()
 
-    return render_template('index.html', items=cards)
-
-
-@app.route('/<card_id>')
-def get_item(card_id):
-    session.get_item(card_id)
-    return index()
+    return redirect('/')
 
 
 @app.route('/<card_id>', methods=['POST'])
