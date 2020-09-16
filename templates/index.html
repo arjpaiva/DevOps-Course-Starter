@@ -17,14 +17,14 @@
                             <div class="col-8">{{ item.title }}</div>
                             <div class="col-2">
                                 {% if item.status == 'Not Started' %}
-                                    <button class="badge badge-danger badge-pill red shadow-none"
+                                    <span class="badge badge-danger badge-pill red shadow-none"
                                             style="border: none">
                                         {{ item.status }}
-                                    </button>
+                                    </span>
                                 {% elif item.status != 'Not Started' %}
-                                    <button class="badge badge-success badge-pill" style="border: none">
+                                    <span class="badge badge-success badge-pill" style="border: none">
                                         {{ item.status }}
-                                    </button>
+                                    </span>
                                 {% endif %}
                             </div>
                             <div class="col-1">

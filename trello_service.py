@@ -1,6 +1,6 @@
 import requests
 import configparser
-import board as b
+from card import Card
 import logging
 
 config = configparser.ConfigParser()
@@ -9,7 +9,7 @@ trello = config['TRELLO']
 
 
 def get_cards():
-    all_cards_url = 'https://api.trello.com/1/boards/{0}/cards'.format(trello['BOARD_ID'])
+    all_cards_url = f'https://api.trello.com/1/boards/{trello["BOARD_ID"]}/cards'
 
     response = requests.get(all_cards_url, params={'key': trello['KEY'], 'token': trello['TOKEN']})
 
@@ -24,7 +24,7 @@ def get_cards():
     for card_json in card_json:
         status = 'Not Started' if card_json['idList'] == trello['NOT_STARTED_LIST_ID'] else 'Completed'
 
-        card = b.Card(card_json['id'], card_json['name'], status)
+        card = Card(card_json['id'], card_json['name'], status)
         cards.append(card)
 
     return cards
@@ -32,7 +32,7 @@ def get_cards():
 
 def get_card(card_id):
 
-    card_id_url = 'https://api.trello.com/1/cards/{0}'.format(card_id)
+    card_id_url = f'https://api.trello.com/1/cards/{card_id}'
     get_card_response = requests.get(card_id_url, params={'key': trello['KEY'], 'token': trello['TOKEN']})
 
     if get_card_response.status_code != 200:
@@ -41,7 +41,7 @@ def get_card(card_id):
 
     card_json = get_card_response.json()
     status = 'Not Started' if card_json['idList'] == trello['NOT_STARTED_LIST_ID'] else 'Completed'
-    card = b.Card(card_json['id'], card_json['name'], status)
+    card = Card(card_json['id'], card_json['name'], status)
 
     return card
 
@@ -65,7 +65,7 @@ def update_card(card_id):
     card = get_card(card_id)
     list_id = trello['COMPLETED_LIST_ID'] if card.status == 'Not Started' else trello['NOT_STARTED_LIST_ID']
 
-    update_card_url = 'https://api.trello.com/1/cards/{0}'.format(card_id)
+    update_card_url = f'https://api.trello.com/1/cards/{card_id}'
     response = requests.put(update_card_url, params={'key': trello['KEY'],
                                                      'token': trello['TOKEN'],
                                                      'idList': list_id})
@@ -77,7 +77,7 @@ def update_card(card_id):
 
 def delete_card(card_id):
     logging.debug('Delete card with id [{0}]'.format(card_id))
-    delete_card_url = 'https://api.trello.com/1/cards/{0}'.format(card_id)
+    delete_card_url = f'https://api.trello.com/1/cards/{card_id}'
 
     response = requests.delete(delete_card_url, params={'key': trello['KEY'], 'token': trello['TOKEN']})
 

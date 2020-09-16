@@ -36,3 +36,18 @@ The `.env` file is used by flask to set environment variables when running `flas
 * There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie.
 
 When running `setup.sh`, the `.env.template` file will be copied to `.env` if the latter does not exist.
+
+### Integration with Trello
+
+Create a file named `.cfg` under the root directory. This file should contain the necessary information to integrate with the Trello application.
+Following is the mandatory fields that need to be specified:
+```
+[TRELLO]
+HOST : https://api.trello.com/1/boards
+KEY : <trello_API_key>
+TOKEN : <trello_API_token>
+BOARD_ID : <trello_board_id> 
+NOT_STARTED_LIST_ID : <trello_not_started_list_id>
+COMPLETED_LIST_ID : <trello_completed_list_id>
+```
+
