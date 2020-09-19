@@ -18,7 +18,7 @@ def index():
     cards = get_and_sort_cards_by_status()
     view_model = ViewModel(cards)
     print(view_model.items)
-    return render_template('index.html', view_model=view_model)
+    return render_template('index.html', view_model=view_model, status_done=Status.DONE, status_todo=Status.TODO)
 
 
 @app.route('/', methods=['POST'])

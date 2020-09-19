@@ -11,8 +11,8 @@
         <div class="col-md-12">
             <h2>Items</h2>
             <div class="list-group mb-4 container">
-                {% if view_model.items is defined and view_model.items %}
-                    {% for item in view_model.items %}
+                {% if view_model.items is defined and view_model.items_by_type(status_done) %}
+                    {% for item in view_model.items_by_type(status_done) %}
                         <div class="list-group-item d-flex justify-content-between align-items-center row">
                             <div class="col-8">{{ item.title }}</div>
                             <div class="col-2">
