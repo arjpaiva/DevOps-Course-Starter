@@ -11,19 +11,19 @@
         <div class="col-md-12">
             <h2>Items</h2>
             <div class="list-group mb-4 container">
-                {% if items is defined and items %}
-                    {% for item in items %}
+                {% if view_model.items is defined and view_model.items %}
+                    {% for item in view_model.items %}
                         <div class="list-group-item d-flex justify-content-between align-items-center row">
                             <div class="col-8">{{ item.title }}</div>
                             <div class="col-2">
-                                {% if item.status == 'Not Started' %}
+                                {% if item.status.value == 'ToDo' %}
                                     <span class="badge badge-danger badge-pill red shadow-none"
                                             style="border: none">
-                                        {{ item.status }}
+                                        {{ item.status.value }}
                                     </span>
-                                {% elif item.status != 'Not Started' %}
+                                {% elif item.status.value == 'Done' %}
                                     <span class="badge badge-success badge-pill" style="border: none">
-                                        {{ item.status }}
+                                        {{ item.status.value }}
                                     </span>
                                 {% endif %}
                             </div>

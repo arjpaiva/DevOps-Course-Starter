@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
 import trello_service as trello
 import logging
+from view_model import ViewModel
+from card import Status
 
 app = Flask(__name__)
 app.config.from_object('flask_config.Config')
@@ -14,7 +16,9 @@ def favicon():
 @app.route('/')
 def index():
     cards = get_and_sort_cards_by_status()
-    return render_template('index.html', items=cards)
+    view_model = ViewModel(cards)
+    print(view_model.items)
+    return render_template('index.html', view_model=view_model)
 
 
 @app.route('/', methods=['POST'])
@@ -65,8 +69,9 @@ def get_and_sort_cards_by_status():
     return cards
 
 
-def get_status(card):
-    return card.status
+def get_status(card) -> Status:
+    print(card.status.value)
+    return card.status.value
 
 
 if __name__ == '__main__':
