@@ -11,6 +11,7 @@ class Card:
 
 class Status(Enum):
     TODO = "ToDo"
+    DOING = "Doing"
     DONE = "Done"
 
 
