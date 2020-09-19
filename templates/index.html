@@ -17,24 +17,37 @@
                             <div class="col-8">{{ item.title }}</div>
                             <div class="col-2">
                                 {% if item.status == 'Not Started' %}
-                                    <form id="complete_item" method="post" action="">
-                                        <a href="#">
-                                    <span class="badge badge-danger badge-pill red"
-                                          onclick="complete_item({{ item.id }})">{{ item.status }}</span>
-                                        </a>
-                                    </form>
+                                    <span class="badge badge-danger badge-pill red shadow-none"
+                                            style="border: none">
+                                        {{ item.status }}
+                                    </span>
                                 {% elif item.status != 'Not Started' %}
-                                    <span class="badge badge-success badge-pill red">{{ item.status }}</span>
+                                    <span class="badge badge-success badge-pill" style="border: none">
+                                        {{ item.status }}
+                                    </span>
                                 {% endif %}
                             </div>
-                            <div class="col-2">
-                                <form id="delete_item" method="post" action="">
-                                    <a href="#">
-                                        <span onclick="delete_item({{ item.id }})" class="float-right">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </span>
-                                    </a>
+                            <div class="col-1">
+                                <form id="delete_item" method="post" action="/{{ item.id }}/delete">
+                                    <button class="btn bg-transparent" style="border: none">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
                                 </form>
+                            </div>
+                            <div class="col-1">
+                                {% if item.status == 'Not Started' %}
+                                    <form id="complete_item" method="post" action="/{{ item.id }}">
+                                    <button class="btn bg-transparent" style="border: none">
+                                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                                    </button>
+                                    </form>
+                                {% elif item.status != 'Not Started' %}
+                                    <form id="move_not_started_item" method="post" action="/{{ item.id }}">
+                                        <button class="btn bg-transparent" style="border: none">
+                                            <i class="fa fa-square" aria-hidden="true"></i>
+                                        </button>
+                                    </form>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
@@ -82,17 +95,4 @@
             </div>
         </form>
     </div>
-    <script type="text/javascript">
-        function complete_item(id) {
-            var form = document.getElementById("complete_item");
-            form.action = '/' + id
-            form.submit();
-        }
-
-        function delete_item(id) {
-            var form = document.getElementById("delete_item");
-            form.action = '/' + id + '/delete'
-            form.submit();
-        }
-    </script>
 {% endblock %}
