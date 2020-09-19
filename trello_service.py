@@ -1,6 +1,6 @@
 import requests
 import configparser
-from card import Card
+from card import Card, Status
 import logging
 
 config = configparser.ConfigParser()
@@ -22,7 +22,7 @@ def get_cards():
 
     cards = []
     for card_json in card_json:
-        status = 'Not Started' if card_json['idList'] == trello['NOT_STARTED_LIST_ID'] else 'Completed'
+        status = Status.TODO if card_json['idList'] == trello['NOT_STARTED_LIST_ID'] else Status.DONE
 
         card = Card(card_json['id'], card_json['name'], status)
         cards.append(card)
@@ -40,7 +40,7 @@ def get_card(card_id):
                       .format(trello['BOARD_ID'], get_card_response.status_code))
 
     card_json = get_card_response.json()
-    status = 'Not Started' if card_json['idList'] == trello['NOT_STARTED_LIST_ID'] else 'Completed'
+    status = Status.TODO if card_json['idList'] == trello['NOT_STARTED_LIST_ID'] else Status.DONE
     card = Card(card_json['id'], card_json['name'], status)
 
     return card
@@ -61,9 +61,9 @@ def create_card(card_title):
 
 
 def update_card(card_id):
-    logging.debug('Update status from \'Not Started\' to \'Completed\' of the card with id [{}]'.format(card_id))
+    logging.debug(f'Update status from {Status.TODO} to {Status.DONE} of the card with id [{card_id}]')
     card = get_card(card_id)
-    list_id = trello['COMPLETED_LIST_ID'] if card.status == 'Not Started' else trello['NOT_STARTED_LIST_ID']
+    list_id = trello['COMPLETED_LIST_ID'] if card.status == Status.TODO else trello['NOT_STARTED_LIST_ID']
 
     update_card_url = f'https://api.trello.com/1/cards/{card_id}'
     response = requests.put(update_card_url, params={'key': trello['KEY'],
