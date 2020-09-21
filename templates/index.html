@@ -29,9 +29,9 @@
                                 </form>
                             </div>
                             <div class="col-1">
-                                <form id="complete_item" method="post" action="/{{ item.id }}">
+                                <form id="move_item_to_doing" method="post" action="/{{ item.id }}">
                                     <button class="btn bg-transparent" style="border: none">
-                                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                                        <i class="fa fa-square" aria-hidden="true"></i>
                                     </button>
                                 </form>
                             </div>
@@ -61,39 +61,7 @@
                                 </form>
                             </div>
                             <div class="col-1">
-                                <form id="complete_item" method="post" action="/{{ item.id }}">
-                                    <button class="btn bg-transparent" style="border: none">
-                                        <i class="fa fa-check-square" aria-hidden="true"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <div><p>No items found</p></div>
-                {% endif %}
-            </div>
-
-            <h2>Done</h2>
-            <div class="list-group mb-4 container">
-                {% if view_model.items is defined and view_model.items_by_type(status_done) %}
-                    {% for item in view_model.items_by_type(status_done) %}
-                        <div class="list-group-item d-flex justify-content-between align-items-center row">
-                            <div class="col-8">{{ item.title }}</div>
-                            <div class="col-2">
-                                <span class="badge badge-success badge-pill" style="border: none">
-                                    {{ item.status.value }}
-                                </span>
-                            </div>
-                            <div class="col-1">
-                                <form id="delete_item" method="post" action="/{{ item.id }}/delete">
-                                    <button class="btn bg-transparent" style="border: none">
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                    </button>
-                                </form>
-                            </div>
-                            <div class="col-1">
-                                <form id="move_not_started_item" method="post" action="/{{ item.id }}">
+                                <form id="move_item_to_done" method="post" action="/{{ item.id }}">
                                     <button class="btn bg-transparent" style="border: none">
                                         <i class="fa fa-square" aria-hidden="true"></i>
                                     </button>
@@ -105,6 +73,108 @@
                     <div><p>No items found</p></div>
                 {% endif %}
             </div>
+
+            <h2>Done</h2>
+            <div>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <button class="btn btn-secondary active" data-toggle="collapse" data-target="#all">
+                        Show All
+                    </button>
+                </div>
+            </div>
+            <div class="list-group mb-4 container" id="today">
+                {% if view_model.items is defined %}
+                    <div id="today">
+                        {% if view_model.get_completed_items() %}
+                            {% for item in view_model.get_completed_items() %}
+                                <div class="list-group-item d-flex justify-content-between align-items-center row">
+                                    <div class="col-8">{{ item.title }}</div>
+                                    <div class="col-2">
+                                <span class="badge badge-success badge-pill" style="border: none">
+                                    {{ item.status.value }}
+                                </span>
+                                    </div>
+                                    <div class="col-1">
+                                        <form id="delete_item" method="post" action="/{{ item.id }}/delete">
+                                            <button class="btn bg-transparent" style="border: none">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-1">
+                                        <form id="move_not_started_item" method="post" action="/{{ item.id }}">
+                                            <button class="btn bg-transparent" style="border: none">
+                                                <i class="fa fa-check-square" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="collapse" id="all">
+                        {% if view_model.items_by_type(status_done) %}
+                            {% for item in view_model.items_by_type(status_done) %}
+                                <div class="list-group-item d-flex justify-content-between align-items-center row">
+                                    <div class="col-8">{{ item.title }}</div>
+                                    <div class="col-2">
+                                <span class="badge badge-success badge-pill" style="border: none">
+                                    {{ item.status.value }}
+                                </span>
+                                    </div>
+                                    <div class="col-1">
+                                        <form id="delete_item" method="post" action="/{{ item.id }}/delete">
+                                            <button class="btn bg-transparent" style="border: none">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-1">
+                                        <form id="move_not_started_item" method="post" action="/{{ item.id }}">
+                                            <button class="btn bg-transparent" style="border: none">
+                                                <i class="fa fa-check-square" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <div><p>No items found</p></div>
+                {% endif %}
+            </div>
+
+            {#            <div class="list-group mb-4 container collapse" id="all">#}
+            {#                {% if view_model.items is defined and view_model.items_by_type(status_done) %}#}
+            {#                    {% for item in view_model.items_by_type(status_done) %}#}
+            {#                        <div class="list-group-item d-flex justify-content-between align-items-center row">#}
+            {#                            <div class="col-8">{{ item.title }}</div>#}
+            {#                            <div class="col-2">#}
+            {#                                <span class="badge badge-success badge-pill" style="border: none">#}
+            {#                                    {{ item.status.value }}#}
+            {#                                </span>#}
+            {#                            </div>#}
+            {#                            <div class="col-1">#}
+            {#                                <form id="delete_item" method="post" action="/{{ item.id }}/delete">#}
+            {#                                    <button class="btn bg-transparent" style="border: none">#}
+            {#                                        <i class="fa fa-trash" aria-hidden="true"></i>#}
+            {#                                    </button>#}
+            {#                                </form>#}
+            {#                            </div>#}
+            {#                            <div class="col-1">#}
+            {#                                <form id="move_not_started_item" method="post" action="/{{ item.id }}">#}
+            {#                                    <button class="btn bg-transparent" style="border: none">#}
+            {#                                        <i class="fa fa-check-square" aria-hidden="true"></i>#}
+            {#                                    </button>#}
+            {#                                </form>#}
+            {#                            </div>#}
+            {#                        </div>#}
+            {#                    {% endfor %}#}
+            {#                {% else %}#}
+            {#                    <div><p>No items found</p></div>#}
+            {#                {% endif %}#}
+            {#            </div>#}
         </div>
     </div>
     <div class="container">
@@ -115,7 +185,7 @@
                     Item
                 </button>
             </div>
-            {% if items is defined and items %}
+            {% if view_model.items and view_model.items %}
                 <div class="float-right col-2">
                     <form action="/delete" method="POST">
                         <button type="submit" id="delete" class="btn btn-danger float-right">Delete All Items</button>

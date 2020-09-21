@@ -17,7 +17,6 @@ def favicon():
 def index():
     cards = get_and_sort_cards_by_status()
     view_model = ViewModel(cards)
-    print(view_model.items)
     return render_template('index.html', view_model=view_model,
                            status_done=Status.DONE,
                            status_todo=Status.TODO,
@@ -40,13 +39,12 @@ def add_item():
             return redirect('/')
 
     trello.create_card(title)
-    # cards = get_and_sort_cards_by_status()
-
     return redirect('/')
 
 
 @app.route('/<card_id>', methods=['POST'])
-def mark_as_completed(card_id):
+def move_state(card_id):
+    print('moving cards')
     trello.update_card(card_id)
     return redirect(url_for('index'))
 
@@ -73,7 +71,6 @@ def get_and_sort_cards_by_status():
 
 
 def get_status(card) -> Status:
-    print(card.status.value)
     return card.status.value
 
 
