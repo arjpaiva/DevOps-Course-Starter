@@ -22,16 +22,14 @@ def get_cards():
 
     cards = []
     for card_json in card_json:
-        status = Status.TODO if card_json['idList'] == trello['TODO_LIST_ID'] else Status.DONE
-
-        card = Card(card_json['id'], card_json['name'], status)
+        status = from_list_id_to_status(card_json['idList'])
+        card = Card(card_json['id'], card_json['name'], status, card_json['dateLastActivity'])
         cards.append(card)
 
     return cards
 
 
 def get_card(card_id):
-
     card_id_url = f'https://api.trello.com/1/cards/{card_id}'
     get_card_response = requests.get(card_id_url, params={'key': trello['KEY'], 'token': trello['TOKEN']})
 
@@ -40,8 +38,8 @@ def get_card(card_id):
                       .format(trello['BOARD_ID'], get_card_response.status_code))
 
     card_json = get_card_response.json()
-    status = Status.TODO if card_json['idList'] == trello['TODO_LIST_ID'] else Status.DONE
-    card = Card(card_json['id'], card_json['name'], status)
+    status = from_list_id_to_status(card_json['idList'])
+    card = Card(card_json['id'], card_json['name'], status, card_json['dateLastActivity'])
 
     return card
 
@@ -61,9 +59,13 @@ def create_card(card_title):
 
 
 def update_card(card_id):
-    logging.debug(f'Update status from {Status.TODO} to {Status.DONE} of the card with id [{card_id}]')
+    logging.debug(f'Update status from {Status.TODO} to {Status.DOING} of the card with id [{card_id}]')
     card = get_card(card_id)
-    list_id = trello['DONE_LIST_ID'] if card.status == Status.TODO else trello['TODO_LIST_ID']
+    # list_id = trello['DONE_LIST_ID'] if card.status == Status.TODO else trello['TODO_LIST_ID']
+
+    list_id = get_next_status_list_id(card.status)
+    if list_id is None:
+        return
 
     update_card_url = f'https://api.trello.com/1/cards/{card_id}'
     response = requests.put(update_card_url, params={'key': trello['KEY'],
@@ -105,3 +107,21 @@ def archive_all_card():
     if response_completed.status_code != 200:
         logging.error('While trying to archive all card - response status code {0}'
                       .format(response_completed.status_code))
+
+
+def get_next_status_list_id(current_status: Status):
+    if current_status == Status.TODO:
+        return trello['DOING_LIST_ID']
+    elif current_status == Status.DOING:
+        return trello['DONE_LIST_ID']
+    else:
+        return None
+
+
+def from_list_id_to_status(list_id):
+    if list_id == trello['TODO_LIST_ID']:
+        return Status.TODO
+    elif list_id == trello['DOING_LIST_ID']:
+        return Status.DOING
+    else:
+        return Status.DONE
