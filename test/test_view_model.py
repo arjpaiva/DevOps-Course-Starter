@@ -86,29 +86,64 @@ def test_doing_items_when_items_of_status():
 
 def test_get_completed_items_when_less_than_5(done_items: List[Card]):
     view_model = ViewModel(done_items)
-    actual_items = view_model.get_completed_items()
+    actual_items = view_model.recent_done_items()
     assert len(actual_items) == 4
+    assert view_model.show_all_done_items
 
 
-def test_get_completed_items_when_equal_5(done_items: List[Card]):
+def test_recent_done_items_when_equal_5(done_items: List[Card]):
+    done_items.append(Card(5, "asdasd", Status.DONE, (datetime.today() - timedelta(days=2)).strftime(DATE_TIME_FORMAT)))
     view_model = ViewModel(done_items)
-    actual_items = view_model.get_completed_items()
-    actual_items.append(
-        Card(5, "asdasd", Status.DONE, (datetime.today() - timedelta(days=2)).strftime(DATE_TIME_FORMAT)))
+    actual_items = view_model.recent_done_items()
     assert len(actual_items) == 5
+    assert view_model.show_all_done_items
 
 
-def test_get_completed_items_when_equal_0():
-    actual_items = []
+def test_recent_done_items_when_equal_0():
+    view_model = ViewModel([])
+    actual_items = view_model.recent_done_items()
     assert len(actual_items) == 0
+    assert view_model.show_all_done_items
 
 
-def test_get_completed_items_when_more_than_5(done_items: List[Card]):
+def test_recent_done_items_when_more_than_5(done_items: List[Card]):
     done_items.append(
         Card(5, "another one", Status.DONE, (datetime.today() - timedelta(days=2)).strftime(DATE_TIME_FORMAT)))
     done_items.append(
         Card(6, "another another one", Status.DONE, (datetime.today() - timedelta(days=3)).strftime(DATE_TIME_FORMAT)))
     view_model = ViewModel(done_items)
-    actual_items = view_model.get_completed_items()
+    actual_items = view_model.recent_done_items()
 
     assert len(actual_items) == 2
+    assert not view_model.show_all_done_items
+
+
+def test_older_done_items_when_equal_5(done_items: List[Card]):
+    done_items.append(Card(5, "asdasd", Status.DONE, (datetime.today() - timedelta(days=2)).strftime(DATE_TIME_FORMAT)))
+    view_model = ViewModel(done_items)
+    actual_items = view_model.older_done_items()
+    assert len(actual_items) == 0
+    assert view_model.show_all_done_items
+
+
+def test_older_done_items_when_equal_0():
+    view_model = ViewModel([])
+    actual_items = view_model.older_done_items()
+    assert len(actual_items) == 0
+    assert view_model.show_all_done_items
+
+
+def test_older_done_items_when_more_than_5(done_items: List[Card]):
+    done_items.append(
+        Card(5, "another one", Status.DONE, (datetime.today() - timedelta(days=2)).strftime(DATE_TIME_FORMAT)))
+    done_items.append(
+        Card(6, "another another one", Status.DONE, (datetime.today() - timedelta(days=3)).strftime(DATE_TIME_FORMAT)))
+    view_model = ViewModel(done_items)
+    actual_items = view_model.older_done_items()
+
+    assert len(actual_items) == 4
+    assert not view_model.show_all_done_items
+
+
+
+
