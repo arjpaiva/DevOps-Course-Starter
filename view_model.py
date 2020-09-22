@@ -8,10 +8,15 @@ class ViewModel:
 
     def __init__(self, items: List[Card]):
         self._items = items
+        self._show_all_done_items = len(items) <= 5
 
     @property
     def items(self):
         return self._items
+
+    @property
+    def show_all_done_items(self):
+        return self._show_all_done_items
 
     def items_by_type(self, status: Status) -> List[Card]:
         todo_items = []
@@ -20,14 +25,28 @@ class ViewModel:
                 todo_items.append(item)
         return todo_items
 
-    def get_completed_items(self) -> List[Card]:
+    def recent_done_items(self) -> List[Card]:
+
         items = self.items_by_type(Status.DONE)
-        if len(items) <= 5:
+        if self._show_all_done_items:
             return items
 
         items_completed_today = []
         for item in items:
-            if datetime.today().day == item.last_modified.day:
+            if datetime.today().date() == item.last_modified.date():
+                items_completed_today.append(item)
+
+        return items_completed_today
+
+    def older_done_items(self) -> List[Card]:
+
+        items = self.items_by_type(Status.DONE)
+        if self._show_all_done_items:
+            return []
+
+        items_completed_today = []
+        for item in items:
+            if datetime.today().date() > item.last_modified.date():
                 items_completed_today.append(item)
 
         return items_completed_today
