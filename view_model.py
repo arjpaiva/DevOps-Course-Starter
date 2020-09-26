@@ -6,9 +6,18 @@ from typing import List
 
 class ViewModel:
 
-    def __init__(self, items: List[Card]):
+    def __init__(self, items: List[Card] = [], error: str = None):
         self._items = items
+        self._error = error
         self._show_all_done_items = len(self.items_by_type(Status.DONE)) <= 5
+
+    @property
+    def error(self):
+        return self._error
+
+    @error.setter
+    def error(self, error):
+        self._error = error
 
     @property
     def items(self):
@@ -17,6 +26,11 @@ class ViewModel:
     @property
     def show_all_done_items(self):
         return self._show_all_done_items
+
+    def has_errors(self):
+        print("value: ")
+        print(self._error is not None)
+        return self._error is not None
 
     def items_by_type(self, status: Status) -> List[Card]:
         todo_items = []

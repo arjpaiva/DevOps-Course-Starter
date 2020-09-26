@@ -8,6 +8,12 @@
     </div>
 
     <div class="row">
+        {% if view_model.has_errors() %}
+            <div><p>{{ view_model.error }}</p></div>
+        {% endif %}
+    </div>
+
+    <div class="row">
         <div class="col-md-12">
             <h2>TODO</h2>
             <div class="list-group mb-4 container">

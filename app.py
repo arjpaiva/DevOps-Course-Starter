@@ -26,16 +26,26 @@ def create_app():
     def add_item():
 
         title = request.form['title']
-        cards = trello.get_cards()
+        cards = get_and_sort_cards_by_status()
 
         if title == '':
-            return redirect('/')
+            view_model = ViewModel(cards)
+            view_model.error = "Title can not be empty"
+            return render_template('index.html', view_model=view_model,
+                                   status_done=Status.DONE,
+                                   status_todo=Status.TODO,
+                                   status_doing=Status.DOING)
 
         for card in cards:
             if card.title == title:
-                # todo show error on front end
-                logging.error('A card with the title ' + title + ' already exists.')
-                return redirect('/')
+                error_message = 'A card with the title ' + title + ' already exists.'
+                logging.error(error_message)
+                view_model = ViewModel(cards)
+                view_model.error = error_message
+                return render_template('index.html', view_model=view_model,
+                                       status_done=Status.DONE,
+                                       status_todo=Status.TODO,
+                                       status_doing=Status.DOING)
 
         trello.create_card(title)
         return redirect('/')
