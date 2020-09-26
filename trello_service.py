@@ -1,12 +1,7 @@
 import requests
-import configparser
 from card import Card, Status
 import logging
 import os
-
-# config = configparser.ConfigParser()
-# config.read('.cfg')
-# trello = config['TRELLO']
 
 
 def get_cards():
