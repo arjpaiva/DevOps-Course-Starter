@@ -8,7 +8,7 @@ class ViewModel:
 
     def __init__(self, items: List[Card]):
         self._items = items
-        self._show_all_done_items = len(items) <= 5
+        self._show_all_done_items = len(self.items_by_type(Status.DONE)) <= 5
 
     @property
     def items(self):

@@ -84,7 +84,17 @@ def test_doing_items_when_items_of_status():
     assert len(todo_items) == 0
 
 
-def test_get_completed_items_when_less_than_5(done_items: List[Card]):
+def test_recent_done_items_when_less_than_5_done_but_more_than_5_in_total(done_items: List[Card]):
+    done_items.append(Card(5, "asdasd", Status.TODO, (datetime.today() - timedelta(days=2)).strftime(DATE_TIME_FORMAT)))
+    done_items.append(Card(6, "asdasd", Status.TODO, (datetime.today() - timedelta(days=2)).strftime(DATE_TIME_FORMAT)))
+    done_items.append(Card(7, "asdasd", Status.TODO, (datetime.today() - timedelta(days=2)).strftime(DATE_TIME_FORMAT)))
+    view_model = ViewModel(done_items)
+    actual_items = view_model.recent_done_items()
+    assert len(actual_items) == 4
+    assert view_model.show_all_done_items
+
+
+def test_recent_done_items_when_less_than_5_done(done_items: List[Card]):
     view_model = ViewModel(done_items)
     actual_items = view_model.recent_done_items()
     assert len(actual_items) == 4
