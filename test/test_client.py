@@ -19,6 +19,7 @@ def client():
     with test_app.test_client() as client:
         yield client
 
+
 class MockResponse(object):
     def __init__(self, status_code, body_content):
         self._status_code = status_code
