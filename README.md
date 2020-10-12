@@ -39,15 +39,16 @@ When running `setup.sh`, the `.env.template` file will be copied to `.env` if th
 
 ### Integration with Trello
 
-Create a file named `.cfg` under the root directory. This file should contain the necessary information to integrate with the Trello application.
+Update `.env` file to contain the relevant information to integrate with the Trello API.
 Following is the mandatory fields that need to be specified:
 ```
-[TRELLO]
-HOST : https://api.trello.com/1/boards
-KEY : <trello_API_key>
-TOKEN : <trello_API_token>
-BOARD_ID : <trello_board_id> 
-NOT_STARTED_LIST_ID : <trello_not_started_list_id>
-COMPLETED_LIST_ID : <trello_completed_list_id>
+# [TRELLO]
+HOST=https://api.trello.com/1/boards
+TRELLO_KEY=<trello_API_key>
+TOKEN=<trello_API_token>
+BOARD_ID=<trello_board_id> 
+TODO_LIST_ID=<trello_todo_list_id>
+DOING_LIST_ID=<trello_doing_list_id>
+DONE_LIST_ID=<trello_donee_list_id>
 ```
 
