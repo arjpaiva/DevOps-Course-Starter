@@ -43,7 +43,7 @@ def new_board():
 
     # Tear Down
     thread.join(1)
-    # trello_service.delete_board()
+    trello_service.delete_board()
 
 
 def test_item_journey(driver, new_board):
