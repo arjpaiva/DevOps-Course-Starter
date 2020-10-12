@@ -52,7 +52,6 @@ def create_app():
 
     @app.route('/<card_id>', methods=['POST'])
     def move_state(card_id):
-        print('moving cards')
         trello.update_card(card_id)
         return redirect(url_for('index'))
 
