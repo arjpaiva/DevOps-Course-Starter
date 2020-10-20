@@ -118,3 +118,6 @@ env/
 
 ### Idea folder ###
 .idea/
+
+### Vagrant ###
+.vagrant
