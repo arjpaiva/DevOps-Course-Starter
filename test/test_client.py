@@ -26,7 +26,7 @@ class MockResponse(object):
         self._body_content = body_content
 
     def json(self):
-        cards_with_json = json.loads(self._body_content)
+        cards_with_json = json.loads(json.dumps(self._body_content))
         cards = []
         for card_json in cards_with_json:
             cards.append(json.loads(card_json))
@@ -53,7 +53,7 @@ def test_index_page(monkeypatch, client):
 def test_add_item_when_item_already_exists_should_redirect(monkeypatch, client):
     def fake_get(*args, **kwargs):
         cards = [generate_one_card_json('apples')]
-        return MockResponse(200, json.dumps(cards))
+        return MockResponse(200, cards)
 
     title = 'apples'
     monkeypatch.setattr(requests, 'get', fake_get)
