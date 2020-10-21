@@ -26,7 +26,7 @@ class MockResponse(object):
         self._body_content = body_content
 
     def json(self):
-        cards_with_json = json.loads(json.dumps(self._body_content))
+        cards_with_json = json.loads(self._body_content)
         cards = []
         for card_json in cards_with_json:
             cards.append(json.loads(card_json))
