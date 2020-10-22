@@ -1,5 +1,8 @@
 Vagrant.configure("2") do |config|
     config.vm.box = "hashicorp/bionic64"
+
+    config.vm.network "forwarded_port", guest: 5000, host: 5000
+
     config.vm.provision "shell", privileged: false, inline: <<-SHELL
         sudo apt-get update
         sudo apt-get install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget \
@@ -18,4 +21,10 @@ Vagrant.configure("2") do |config|
 
         exec $SHELL
     SHELL
+
+    config.trigger.after :up do |trigger|
+        trigger.name = "Launching App"
+        trigger.info = "Running the TODO app setup script"
+        trigger.run_remote = {privileged: false, inline: "cd /vagrant && ./start_project.sh"}
+    end
 end
