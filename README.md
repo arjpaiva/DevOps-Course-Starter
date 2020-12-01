@@ -67,3 +67,22 @@ TODO_LIST_ID=<trello_todo_list_id>
 DOING_LIST_ID=<trello_doing_list_id>
 DONE_LIST_ID=<trello_donee_list_id>
 ```
+
+### Vagrant
+It's possible to run the application in a Virtual Machine, by using Vagrant. 
+
+To start the the VM
+```bash
+Vagrant up
+```
+
+To ssh into the virtual machine
+
+```bash
+Vagrant ssh
+```
+
+To destroy the VM
+```bash
+Vagrant destroy
+```
