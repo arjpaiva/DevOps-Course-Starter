@@ -8,24 +8,24 @@
     </div>
 
     <div class="row">
+        {% if view_model.has_errors() %}
+            <div><p>{{ view_model.error }}</p></div>
+        {% endif %}
+    </div>
+
+    <div class="row">
         <div class="col-md-12">
-            <h2>Items</h2>
+            <h2>TODO</h2>
             <div class="list-group mb-4 container">
-                {% if items is defined and items %}
-                    {% for item in items %}
+                {% if view_model.items is defined and view_model.items_by_type(status_todo) %}
+                    {% for item in view_model.items_by_type(status_todo) %}
                         <div class="list-group-item d-flex justify-content-between align-items-center row">
-                            <div class="col-8">{{ item.title }}</div>
+                            <div class="col-8" id="todo-item-title">{{ item.title }}</div>
                             <div class="col-2">
-                                {% if item.status == 'Not Started' %}
-                                    <span class="badge badge-danger badge-pill red shadow-none"
-                                            style="border: none">
-                                        {{ item.status }}
-                                    </span>
-                                {% elif item.status != 'Not Started' %}
-                                    <span class="badge badge-success badge-pill" style="border: none">
-                                        {{ item.status }}
-                                    </span>
-                                {% endif %}
+                                <span class="badge badge-danger badge-pill red shadow-none"
+                                      style="border: none">
+                                    {{ item.status.value }}
+                                </span>
                             </div>
                             <div class="col-1">
                                 <form id="delete_item" method="post" action="/{{ item.id }}/delete">
@@ -35,24 +35,123 @@
                                 </form>
                             </div>
                             <div class="col-1">
-                                {% if item.status == 'Not Started' %}
-                                    <form id="complete_item" method="post" action="/{{ item.id }}">
-                                    <button class="btn bg-transparent" style="border: none">
-                                        <i class="fa fa-check-square" aria-hidden="true"></i>
+                                <form id="move_item_to_doing" method="post" action="/{{ item.id }}">
+                                    <button class="btn bg-transparent"
+                                            style="border: none"
+                                            type="submit">
+                                        <i class="fa fa-square" aria-hidden="true"></i>
                                     </button>
-                                    </form>
-                                {% elif item.status != 'Not Started' %}
-                                    <form id="move_not_started_item" method="post" action="/{{ item.id }}">
-                                        <button class="btn bg-transparent" style="border: none">
-                                            <i class="fa fa-square" aria-hidden="true"></i>
-                                        </button>
-                                    </form>
-                                {% endif %}
+                                </form>
                             </div>
                         </div>
                     {% endfor %}
                 {% else %}
-                    <div><p>No items found</p></div>
+                    <div id="no-todo-items-message"><p>No items found</p></div>
+                {% endif %}
+            </div>
+
+            <h2>Doing</h2>
+            <div class="list-group mb-4 container">
+                {% if view_model.items is defined and view_model.items_by_type(status_doing) %}
+                    {% for item in view_model.items_by_type(status_doing) %}
+                        <div class="list-group-item d-flex justify-content-between align-items-center row">
+                            <div class="col-8" id="doing-item-title">{{ item.title }}</div>
+                            <div class="col-2">
+                                <span class="badge badge-primary badge-pill" style="border: none">
+                                    {{ item.status.value }}
+                                </span>
+                            </div>
+                            <div class="col-1">
+                                <form id="delete_item" method="post" action="/{{ item.id }}/delete">
+                                    <button class="btn bg-transparent" style="border: none">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </div>
+                            <div class="col-1">
+                                <form id="move_item_to_done" method="post" action="/{{ item.id }}">
+                                    <button class="btn bg-transparent" style="border: none">
+                                        <i class="fa fa-square" aria-hidden="true"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div id="no-doing-items-message"><p>No items found</p></div>
+                {% endif %}
+            </div>
+
+            <h2>Done</h2>
+            <div>
+                {% if view_model.items is defined and view_model.items_by_type(status_done) %}
+                    <div>
+                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                            <button class="btn btn-secondary active" data-toggle="collapse" data-target="#all">
+                                Show All
+                            </button>
+                        </div>
+                    </div>
+                    <div class="list-group mb-4 container" id="today">
+                        <div id="today">
+                            {% if view_model.recent_done_items() %}
+                                {% for item in view_model.recent_done_items() %}
+                                    <div class="list-group-item d-flex justify-content-between align-items-center row">
+                                        <div class="col-8" id="done-item-title">{{ item.title }}</div>
+                                        <div class="col-2">
+                                <span class="badge badge-success badge-pill" style="border: none">
+                                    {{ item.status.value }}
+                                </span>
+                                        </div>
+                                        <div class="col-1">
+                                            <form id="delete_item" method="post" action="/{{ item.id }}/delete">
+                                                <button class="btn bg-transparent" style="border: none">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="col-1">
+                                            <form id="move_not_started_item" method="post" action="/{{ item.id }}">
+                                                <button class="btn bg-transparent" style="border: none">
+                                                    <i class="fa fa-check-square" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="collapse" id="all">
+                            {% if not view_model.show_all_done_items %}
+                                {% for item in view_model.older_done_items() %}
+                                    <div class="list-group-item d-flex justify-content-between align-items-center row">
+                                        <div class="col-8">{{ item.title }}</div>
+                                        <div class="col-2">
+                                <span class="badge badge-success badge-pill" style="border: none">
+                                    {{ item.status.value }}
+                                </span>
+                                        </div>
+                                        <div class="col-1">
+                                            <form id="delete_item" method="post" action="/{{ item.id }}/delete">
+                                                <button class="btn bg-transparent" style="border: none">
+                                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                        <div class="col-1">
+                                            <form id="move_not_started_item" method="post" action="/{{ item.id }}">
+                                                <button class="btn bg-transparent" style="border: none">
+                                                    <i class="fa fa-check-square" aria-hidden="true"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div id="no-done-items-message"><p>No items found</p></div>
                 {% endif %}
             </div>
         </div>
@@ -61,11 +160,11 @@
         <div class="row">
             <div class="col-10">
                 <button type="button" class="btn btn-primary float-right" data-toggle="modal"
-                        data-target="#modalAddItemForm">Add
+                        data-target="#modalAddItemForm" id="add-item">Add
                     Item
                 </button>
             </div>
-            {% if items is defined and items %}
+            {% if view_model.items and view_model.items %}
                 <div class="float-right col-2">
                     <form action="/delete" method="POST">
                         <button type="submit" id="delete" class="btn btn-danger float-right">Delete All Items</button>

@@ -114,7 +114,11 @@ env/
 
 ### Configuration files ###
 .env
-.cfg
+.env.test
+.venv/
 
 ### Idea folder ###
 .idea/
+
+### Vagrant ###
+.vagrant
