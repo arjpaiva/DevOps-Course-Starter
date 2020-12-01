@@ -86,3 +86,6 @@ To destroy the VM
 ```bash
 Vagrant destroy
 ```
+
+
+### Docker
