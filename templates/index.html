@@ -20,7 +20,7 @@
                 {% if view_model.items is defined and view_model.items_by_type(status_todo) %}
                     {% for item in view_model.items_by_type(status_todo) %}
                         <div class="list-group-item d-flex justify-content-between align-items-center row">
-                            <div class="col-8">{{ item.title }}</div>
+                            <div class="col-8" id="todo-item-title">{{ item.title }}</div>
                             <div class="col-2">
                                 <span class="badge badge-danger badge-pill red shadow-none"
                                       style="border: none">
@@ -46,7 +46,7 @@
                         </div>
                     {% endfor %}
                 {% else %}
-                    <div><p>No items found</p></div>
+                    <div id="no-todo-items-message"><p>No items found</p></div>
                 {% endif %}
             </div>
 
@@ -55,7 +55,7 @@
                 {% if view_model.items is defined and view_model.items_by_type(status_doing) %}
                     {% for item in view_model.items_by_type(status_doing) %}
                         <div class="list-group-item d-flex justify-content-between align-items-center row">
-                            <div class="col-8">{{ item.title }}</div>
+                            <div class="col-8" id="doing-item-title">{{ item.title }}</div>
                             <div class="col-2">
                                 <span class="badge badge-primary badge-pill" style="border: none">
                                     {{ item.status.value }}
@@ -78,7 +78,7 @@
                         </div>
                     {% endfor %}
                 {% else %}
-                    <div><p>No items found</p></div>
+                    <div id="no-doing-items-message"><p>No items found</p></div>
                 {% endif %}
             </div>
 
@@ -97,7 +97,7 @@
                             {% if view_model.recent_done_items() %}
                                 {% for item in view_model.recent_done_items() %}
                                     <div class="list-group-item d-flex justify-content-between align-items-center row">
-                                        <div class="col-8">{{ item.title }}</div>
+                                        <div class="col-8" id="done-item-title">{{ item.title }}</div>
                                         <div class="col-2">
                                 <span class="badge badge-success badge-pill" style="border: none">
                                     {{ item.status.value }}
@@ -151,7 +151,7 @@
                         </div>
                     </div>
                 {% else %}
-                    <div><p>No items found</p></div>
+                    <div id="no-done-items-message"><p>No items found</p></div>
                 {% endif %}
             </div>
         </div>
@@ -160,7 +160,7 @@
         <div class="row">
             <div class="col-10">
                 <button type="button" class="btn btn-primary float-right" data-toggle="modal"
-                        data-target="#modalAddItemForm">Add
+                        data-target="#modalAddItemForm" id="add-item">Add
                     Item
                 </button>
             </div>
