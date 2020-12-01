@@ -63,10 +63,7 @@ def test_add_item_when_item_already_exists_should_redirect(monkeypatch, client):
     assert f'A card with the title {title} already exists.' in response_html.decode("utf-8")
 
 
-def test_add_item_when_item_is_empty_should_redirect(monkeypatch, client):
-    def fake_get(*args, **kwargs):
-        cards = [generate_one_card_json('apples')]
-        return MockResponse(200, json.dumps(cards))
+def test_add_item_when_item_is_empty_should_throw_exception(monkeypatch, client):
 
     response = client.post('/', data=dict(title=''))
     response_html = response.data

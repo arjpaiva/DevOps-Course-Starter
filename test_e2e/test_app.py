@@ -10,7 +10,7 @@ from threading import Thread
 
 @pytest.fixture(scope="module")
 def driver():
-    with webdriver.Chrome('/usr/local/bin/chromedriver') as driver:
+    with webdriver.Chrome() as driver:
         yield driver
 
 
@@ -50,31 +50,31 @@ def test_item_journey(driver, new_board):
     driver.get('http://localhost:5000/')
     assert driver.title == 'To-Do App'
 
-    todo_empty_list = driver.find_element_by_xpath('/html/body/div/div[3]/div/div[1]/div/p')
+    todo_empty_list = driver.find_element_by_id('no-todo-items-message')
     assert 'No items found' in str(todo_empty_list.text)
 
-    doing_empty_list = driver.find_element_by_xpath('/html/body/div/div[3]/div/div[2]/div/p')
+    doing_empty_list = driver.find_element_by_id('no-doing-items-message')
     assert 'No items found' in str(doing_empty_list.text)
 
-    done_empty_list = driver.find_element_by_xpath('/html/body/div/div[3]/div/div[3]/div/p')
+    done_empty_list = driver.find_element_by_id('no-done-items-message')
     assert 'No items found' in str(done_empty_list.text)
 
-    driver.find_element_by_xpath('/html/body/div/div[4]/div/div/button').click()
+    driver.find_element_by_id('add-item').click()
     driver.implicitly_wait(5)
     new_title_input = driver.find_element_by_id('title')
     new_title_input.send_keys('test-name')
     new_title_input.submit()
     driver.implicitly_wait(5)
 
-    todo_list = driver.find_element_by_xpath('/html/body/div/div[3]/div/div/div[1]')
+    todo_list = driver.find_element_by_id('todo-item-title')
     assert 'test-name' in str(todo_list.text)
 
-    driver.find_element_by_xpath('/html/body/div/div[3]/div/div/div/div[4]/form').click()
-    doing_list = driver.find_element_by_xpath('/html/body/div/div[3]/div/div[2]/div')
+    driver.find_element_by_id('move_item_to_doing').click()
+    doing_list = driver.find_element_by_id('doing-item-title')
     assert 'test-name' in str(doing_list.text)
 
-    driver.find_element_by_xpath('/html/body/div/div[3]/div/div[2]/div/div[4]/form').click()
-    done_list = driver.find_element_by_xpath('/html/body/div/div[3]/div/div[3]/div[2]')
+    driver.find_element_by_id('move_item_to_done').click()
+    done_list = driver.find_element_by_id('done-item-title')
     assert 'test-name' in str(done_list.text)
 
 
