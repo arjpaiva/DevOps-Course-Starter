@@ -89,3 +89,7 @@ Vagrant destroy
 
 
 ### Docker
+export $(cat .env | grep '^[A-Z]' | xargs)
+
+docker build --tag todo-app .
+docker run -p 127.0.0.1:5000:8000 --env-file .env todo-app

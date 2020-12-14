@@ -73,7 +73,7 @@ dotenv = ["python-dotenv"]
 
 [[package]]
 name = "gunicorn"
-version = "20.0.0"
+version = "20.0.4"
 description = "WSGI HTTP Server for UNIX"
 category = "main"
 optional = false
@@ -275,7 +275,7 @@ watchdog = ["watchdog"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "9f4c91c124675312d9102ca39241eae5e17a63aeba592c15ac311e991ce9d67b"
+content-hash = "13caef0f53e9aee2a470db5cdf6882cde49905c8e795d29461a6a9175324b00c"
 
 [metadata.files]
 atomicwrites = [
@@ -307,8 +307,8 @@ flask = [
     {file = "Flask-1.1.2.tar.gz", hash = "sha256:4efa1ae2d7c9865af48986de8aeb8504bf32c7f3d6fdc9353d34b21f4b127060"},
 ]
 gunicorn = [
-    {file = "gunicorn-20.0.0-py2.py3-none-any.whl", hash = "sha256:0806b5e8a2eb8ba9ac1be65d7b743ec896fc25f5d6cb16c5e051540157b315bb"},
-    {file = "gunicorn-20.0.0.tar.gz", hash = "sha256:ef69dea4814df95e64e3f40b47b7ffedc6911c5009233be9d01cfd0d14aa3f50"},
+    {file = "gunicorn-20.0.4-py2.py3-none-any.whl", hash = "sha256:cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"},
+    {file = "gunicorn-20.0.4.tar.gz", hash = "sha256:1904bb2b8a43658807108d59c3f3d56c2b6121a701161de0ddf9ad140073c626"},
 ]
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},

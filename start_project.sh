@@ -1,4 +1,4 @@
 #!/bin/bash
 
 poetry install
-poetry run gunicorn --bind 127.0.0.1:5000 "app:create_app()"
+poetry run gunicorn --bind 0.0.0.0:8000 "app:create_app()"
