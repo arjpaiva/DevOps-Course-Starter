@@ -93,3 +93,6 @@ export $(cat .env | grep '^[A-Z]' | xargs)
 
 docker build --tag todo-app .
 docker run -p 127.0.0.1:5000:8000 --env-file .env todo-app
+
+docker build --target production --tag todo-app:prod .  
+docker run -p 127.0.0.1:5000:8000 --env-file .env todo-app:prod
