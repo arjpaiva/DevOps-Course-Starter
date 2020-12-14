@@ -16,6 +16,5 @@ CMD /bin/bash start_project_production.sh
 FROM base as development
 
 EXPOSE 5000
-COPY . /code
 
 CMD /bin/bash start_project_development.sh
