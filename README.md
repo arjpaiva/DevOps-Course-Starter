@@ -50,12 +50,12 @@ Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser
 Start by exporting the properties defined on `.env` into your environment
 
 ```bash
-export $(cat .env | grep '^[A-Z]' | xargs)
+$ export $(cat .env | grep '^[A-Z]' | xargs)
 ```
 
 Then run the script:
 ```bash 
-start_project_production.sh
+$ start_project_production.sh
 ```
 Now visit [`0.0.0.0:5000/`](0.0.0.0:5000) in your web browser to view the app.
 
@@ -67,7 +67,7 @@ The `.env` file is used by flask to set environment variables when running `flas
 ### Troubleshooting
 If the `.venv` gets corrupted, run the following command:
 ```bash
-deactivate
+$ deactivate
 ``` 
 Then remove the `.venv` directory.
 
@@ -91,18 +91,18 @@ It's possible to run the application in a Virtual Machine, by using Vagrant.
 
 To start the the VM
 ```bash
-Vagrant up
+$ Vagrant up
 ```
 
 To ssh into the virtual machine
 
 ```bash
-Vagrant ssh
+$ Vagrant ssh
 ```
 
 To destroy the VM
 ```bash
-Vagrant destroy
+$ Vagrant destroy
 ```
 
 ## Docker
@@ -111,22 +111,22 @@ The application can either be run using docker commands or docker-compose:
 #### Docker - development environment
 Build the development image:
 ```bash
-docker build --target development --tag todo-app:dev .
+$ docker build --target development --tag todo-app:dev .
 ```
 
 or by using docker-compose: 
 ```bash
-docker-compose -f docker-compose.dev.yml build
+$ docker-compose -f docker-compose.dev.yml build
 ```
 
 Run the development image:
 ```bash
-docker run --mount type=bind,src="$(pwd)",target=/code -p 127.0.0.1:5000:5000 --env-file .env todo-app:dev
+$ docker run --mount type=bind,src="$(pwd)",target=/code -p 127.0.0.1:5000:5000 --env-file .env todo-app:dev
 ```
 
 or by using docker-compose:
 ```bash
-docker-compose -f docker-compose.dev.yml up
+$ docker-compose -f docker-compose.dev.yml up
 ```
 
 Both commands will bind the machines source code directory to the container and will enable to make changes in run time.
@@ -134,20 +134,20 @@ Both commands will bind the machines source code directory to the container and 
 ####Docker - production environment
 Build the production image:
 ```bash
-docker build --target production --tag todo-app:prod .
+$ docker build --target production --tag todo-app:prod .
 ```
 
 or by using docker-compose
 ```bash
-docker-compose -f docker-compose.prod.yml build
+$ docker-compose -f docker-compose.prod.yml build
 ```
 
 Run the production image:
 ```bash
-docker run -p 127.0.0.1:5000:8000 --env-file .env todo-app:prod
+$ docker run -p 127.0.0.1:5000:8000 --env-file .env todo-app:prod
 ```
 
 or by using docker-compose 
 ```bash
-docker-compose -f docker-compose.prod.yml up
+$ docker-compose -f docker-compose.prod.yml up
 ```
