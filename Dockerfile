@@ -18,3 +18,10 @@ FROM base as development
 EXPOSE 5000
 
 CMD /bin/bash start_project_development.sh
+
+#test
+FROM base as test
+
+EXPOSE 5000
+
+CMD /bin/bash start_project_development.sh
