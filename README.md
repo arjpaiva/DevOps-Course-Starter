@@ -45,7 +45,7 @@ You should see output similar to the following:
 
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
 
-### Running the application using Gunicorn
+### Running the application using Gunicorn (only for Linux or Mac)
 
 Start by exporting the properties defined on `.env` into your environment
 

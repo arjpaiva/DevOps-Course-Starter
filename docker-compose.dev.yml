@@ -5,7 +5,7 @@ services:
       context: .
       target: development
     ports:
-      - "127.0.0.1:5000:5000"
+      - 127.0.0.1:5000:5000
     env_file:
       - .env
     volumes:
