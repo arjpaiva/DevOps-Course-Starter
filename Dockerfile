@@ -10,11 +10,11 @@ FROM base as production
 EXPOSE 8000
 COPY . /code
 
-CMD /bin/bash start_project_production.sh
+ENTRYPOINT ["/bin/bash", "start_project_production.sh"]
 
 #development
 FROM base as development
 
 EXPOSE 5000
 
-CMD /bin/bash start_project_development.sh
+ENTRYPOINT ["/bin/bash", "start_project_development.sh"]
