@@ -10,7 +10,10 @@ from threading import Thread
 
 @pytest.fixture(scope="module")
 def driver():
-    with webdriver.Chrome() as driver:
+    opts = webdriver.ChromeOptions()
+    opts.add_argument('--headless')
+    opts.add_argument('--no-sandbox')
+    with webdriver.Chrome("./chromedriver", options=opts) as driver:
         yield driver
 
 
@@ -22,6 +25,7 @@ def new_board():
 
     # Create the new board & update the board id environment variable
     board_id = trello_service.create_board('selenium')
+    print("boardid= " + board_id)
     os.environ['BOARD_ID'] = board_id
 
     lists = trello_service.get_lists_per_board()
@@ -76,7 +80,3 @@ def test_item_journey(driver, new_board):
     driver.find_element_by_id('move_item_to_done').click()
     done_list = driver.find_element_by_id('done-item-title')
     assert 'test-name' in str(done_list.text)
-
-
-
-

@@ -21,7 +21,16 @@ ENTRYPOINT ["/bin/bash", "start_project_development.sh"]
 
 #test
 FROM base as test
+COPY . /code
 
-EXPOSE 5000
+RUN apt-get -y update
+RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb && apt-get install ./chrome.deb -y && rm ./chrome.deb
+
+# Install Chromium WebDriver
+RUN LATEST=`curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE` && \
+    echo "Installing chromium webdriver version ${LATEST}" && \
+    curl -sSL https://chromedriver.storage.googleapis.com/${LATEST}/chromedriver_linux64.zip -o chromedriver_linux64.zip && \
+    apt-get install unzip -y && \
+    unzip ./chromedriver_linux64.zip
 
 ENTRYPOINT ["/bin/bash", "start_project_test.sh"]
