@@ -1,9 +1,7 @@
 language: python
-python:
-  - "3.8"
+
+services:
+  - docker
 before_install:
-  - pip install poetry
-install:
-  - poetry install
-script:
-  - poetry run pytest
+  - docker build --target test -t todo-app-test:test .
+  - docker run -e TRELLO_KEY=4cca920520d0f8e1d1e0a208b800dabe  -e TOKEN=0e6ce59effb16215e0e5940923b182b1bcc10d76af71d8f53cc5697fa8a7859c -e SECRET_KEY=secret-key todo-app-test:test
