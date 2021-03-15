@@ -1,4 +1,4 @@
-FROM python:3.8 as base
+FROM dockerproxy.aexp.com/python:3.8 as base
 
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 ENV PATH="${PATH}:/root/.poetry/bin"
@@ -33,4 +33,4 @@ RUN LATEST=`curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE
     apt-get install unzip -y && \
     unzip ./chromedriver_linux64.zip
 
-ENTRYPOINT ["/bin/bash", "start_project_test.sh"]
+ENTRYPOINT ["/bin/bash", "start_project_test.sh", "${test_path}"]
