@@ -2,4 +2,4 @@
 
 poetry install
 echo $1
-poetry run pytest $1
+poetry run pytest

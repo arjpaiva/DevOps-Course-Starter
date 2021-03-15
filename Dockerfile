@@ -1,14 +1,14 @@
-FROM dockerproxy.aexp.com/python:3.8 as base
+FROM python:3.8 as base
 
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 ENV PATH="${PATH}:/root/.poetry/bin"
-WORKDIR /code
+WORKDIR /app
 
 #production
 FROM base as production
 
 EXPOSE 8000
-COPY . /code
+COPY . /app
 
 ENTRYPOINT ["/bin/bash", "start_project_production.sh"]
 
@@ -21,7 +21,7 @@ ENTRYPOINT ["/bin/bash", "start_project_development.sh"]
 
 #test
 FROM base as test
-COPY . /code
+COPY . /app
 
 RUN apt-get -y update
 RUN curl -sSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o chrome.deb && apt-get install ./chrome.deb -y && rm ./chrome.deb
@@ -33,4 +33,6 @@ RUN LATEST=`curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE
     apt-get install unzip -y && \
     unzip ./chromedriver_linux64.zip
 
-ENTRYPOINT ["/bin/bash", "start_project_test.sh", "${test_path}"]
+RUN poetry install
+
+ENTRYPOINT ["poetry", "run", "pytest"]
