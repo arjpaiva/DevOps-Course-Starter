@@ -170,5 +170,5 @@ $ docker run --env-file .env todo-app-test:test test/test_client.py
 
 Run the test image - end to end test:
 ```bash
-$ docker run --env-file .env todo-app-test:test test/test_app.py
+$ docker run -e TRELLO_KEY=<trello_key> -e TOKEN=<token> -e SECRET_KEY=<secret_key> todo-app-test:test test/test_app.py
 ```
