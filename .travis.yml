@@ -7,7 +7,12 @@ env:
     - secure: mEpqWg5ctylIcZbFwvg2UZsMcKdj4m8qMfCFR2buinZMPV+6NPxnNOHGI6CNhCr0g2+ArdGt5giseXyojuJe0gA+K8XRo8SIFTbolh7+1uwbMDCBYhRcm46ubqRKFqWG9vqaV08lSb73uBnB7iOdmPrYFObN7njwBPHDkb0wnWlhLRybqHjr1lYh5GrZGyqmWrq/320KVt7pLc8Vy7Z9FMSfh/TwQYKx0Ak+YVm0NOpvD/GhmkyzPW6RzA2xQfxR23NF6ohxX/8bjYrJAQfvNDEO+jyZn5VG0KuaDqCJENuBtk+CJVLwI8woNxClWTHioh5fqaUAQq6v8kj6HB4UoYeGiOyBcaVngbNr1e93dKiSotYjc2yWRhikuvjug2bCGt91aeIuaeTnlbvlWH7u0B1k9FLTG/sRDXyBJO0AbTWtr+Cpao5F7g8Fw1TARmaSY+SqUGAnu6/9zaJzlrKGIX/UiJGhQQ0BTQKO4smW5J5w1bBFyFpdFAzJ3wptTSFunBvvoL8UJxsi/I2ZD54KMLjPb22nT/SgTMoHthzybZrpE9BAWKhavP7phSfHCSleHha/hhDo2Dn1+lPPQMkyfjQso6TOSL1VT2mDqY2uWYd33ox/WCdsGo+a8eENoEZ5dLDZDDpkqvsE4Od/V/iKL3vcvWCRRhliPe+E0KqvFEc=
 script:
   - docker build --target test -t todo-app-test:test .
-  - docker run todo-app-test:test test/test_view_model.py
-  - docker run todo-app-test:test test/test_client.py
-  - docker run -e TRELLO_KEY=$TRELLO_KEY -e TOKEN=$TOKEN
-    -e SECRET_KEY=$SECRET_KEY todo-app-test:test test_e2e/test_app.py
+  - docker run --env-file .env.test todo-app-test:test test/test_view_model.py
+  - docker run --env-file .env.test todo-app-test:test test/test_client.py
+  - docker run --env-file .env todo-app-test:test test/test_app.py
+
+branches:
+  only:
+    - master
+jobs:
+  if: type = pull_request
