@@ -9,7 +9,7 @@ script:
   - docker build --target test -t todo-app-test:test .
   - docker run --env-file .env.test todo-app-test:test test/test_view_model.py
   - docker run --env-file .env.test todo-app-test:test test/test_client.py
-  - docker run -e TRELLO_KEY=<trello_key> -e TOKEN=<token> -e SECRET_KEY=<secret_key> todo-app-test:test test/test_app.py
+  - docker run -e TRELLO_KEY=$TRELLO_KEY -e TOKEN=$TOKEN -e SECRET_KEY=$SECRET_KEY todo-app-test:test test/test_app.py
 
 branches:
   only:
