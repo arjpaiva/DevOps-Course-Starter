@@ -12,9 +12,9 @@ script:
   - docker run --env-file .env.test todo-app-test:test test/test_client.py
   - docker run -e TRELLO_KEY=$TRELLO_KEY -e TOKEN=$TOKEN -e SECRET_KEY=$SECRET_KEY todo-app-test:test
     test/test_app.py
-  - docker build --target production -t todo-app-test:latest .
+  - docker build --target production -t ritapaiva/todo-app-test:latest .
   - docker login -u ritapaiva -p $DOCKERHUB_PASSWORD
-  - docker push todo-app-test:latest
+  - docker push ritapaiva/todo-app-test:latest
 branches:
   only:
   - master
