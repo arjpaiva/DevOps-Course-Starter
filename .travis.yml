@@ -20,6 +20,9 @@ after_script:
   - docker tag ritapaiva/todo-app:$TRAVIS_COMMIT registry.heroku.com/ritapaiva-todo-app/web
   - docker push registry.heroku.com/ritapaiva-todo-app/web
   - heroku container:release web --app ritapaiva-todo-app
+branches:
+  only:
+  - master
 jobs:
   if: type = pull_request
 notifications:
