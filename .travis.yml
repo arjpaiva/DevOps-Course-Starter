@@ -15,9 +15,9 @@ script:
   - docker build --target production -t ritapaiva/todo-app-test:latest .
   - docker login -u ritapaiva -p $DOCKERHUB_PASSWORD
   - docker push ritapaiva/todo-app-test:latest
-branches:
-  only:
-  - master
+#branches:
+#  only:
+#  - master
 jobs:
   if: type = pull_request
 notifications:
