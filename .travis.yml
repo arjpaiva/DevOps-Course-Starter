@@ -8,18 +8,18 @@ env:
   - secure: rA46HL5dngyeENMOwcUdzYiVluZmgmCnyWnOHAp0EumhbW4Dgi9twGDtuYhsZvl/f9eAn0/LATD/qcJf8jJ3HwbO3bzY4kxs0RveM/yPOj+A2M42qhkPDgZk7y90MiZp362ZAEv4I4aQBcUUytzt7e6ghDyGW/OU/a8VBV9P/7wsmQqAlQcccn5OZ6HEZYfdF4quW+RkCmsLh3c7bRSzs/+ACdS3p4LeNcRYkzBPTN8Yy/HR/BO1HAfjfHzFP+TUoHRiDehXjdXcMOqFFTOjJL1lMoq4/9Qrk2bqx7TNZJxFs0lPXboT/+WmQXQgEDoltHXtNdnS+rGqppBdMP1jxZAA0KJ+tg/HYmTY71qnWJEZKCtVivj0VgAa7nnhnJqC/+5ZnoN87l9WrdZMzAxSkGJJ67eVRcK0G2F0xJiT7hEsQuAkzeUQjqkrtG5vbewc/hRAp3ayJ46OHctHzg/tNsO1jT3p0HV8I74anBO8fV1s9wuNHhPwwvNgP0tR71GjXkDK2fV2wwJ1gtYuURoFI0G4Uo0MjX21XGbr87Hry5T4RddA+f2Xs2Mn84AP6C7EPrvfcUT3sQoRFbvy6qMAUatICGWJG0UsghbRqsIZ0M33BQpi8dpDBGvbGcaKAOd4sf2fmjDETjKG9E43YahSetVDWpOEP0SwPze7wSywWB8=
   - secure: NN8AAFBJogSBy34oGTsqulBWz8PS1T0Jh8WVv8QYilesUMyc+agRdYmzgPZpVJl1hkX2gmlmn1AnEMYM2Chc/ILCVPk9tXLCRZHGqvfZKbefwKLg3YY+cf8B3dVsfi7qZATlZXbHE4YvvO4iw+Vyp2s5Rs3j0pXT8wx1zzyS/jB+FT3VR+F7m4p0wfWrDV07uf5A9DtpLf1rvWLzNmp/pQyMY5dj33zAkWz0Loso3QVeAbt6+LeIpBnQ8myJ3qBf0BD0BTiYFHEZgKIMKHagv7qZOt9N3qIJYipK86CCRQBJVUTfBjxj9ZJEmNJIOmnIcUEwAC2z2eJtVe/S1DqsBs+v+vrS7T2J+t2HTjh8BJcVjdIUL6RUB8HPmXhacNy1KggB7iKIOPSzEB/qkuExgITwYebJ2YBeXjR6P8QrmELwdes3IXFdDa217slQfg9ub5fhNbtQ3ygn1dIzrQnZ+vTGWGFd7iB3LTVWe41P5XKWx8zK8U5SuAoK9V96E3cbbMEQE2mKFL3EFB5XfPSArigB+Y/kPa7/Fz1LhKcV+9dNRIM0FQNzID+tqCJxbD+F4o/thkOutFSo3XLklQwpgKLdG1mXSMMLo/cKe1DeBvKQve1l50te7aC++c++dPqJoocc4kMCc7RP2IFg0k6IP3N/vL8a83v4jSoOTA9GCSE=
 script:
-- docker build --target test -t todo-app-test:test .
-- docker run --env-file .env.test todo-app-test:test test/test_view_model.py
-- docker run --env-file .env.test todo-app-test:test test/test_client.py
-- docker run -e TRELLO_KEY=$TRELLO_KEY -e TOKEN=$TOKEN -e SECRET_KEY=$SECRET_KEY todo-app-test:test
+  - docker build --target test -t todo-app-test:test .
+  - docker run --env-file .env.test todo-app-test:test test/test_view_model.py
+  - docker run --env-file .env.test todo-app-test:test test/test_client.py
+  - docker run -e TRELLO_KEY=$TRELLO_KEY -e TOKEN=$TOKEN -e SECRET_KEY=$SECRET_KEY todo-app-test:test
   test/test_app.py
 after_script:
-- docker build --target production -t ritapaiva/todo-app:$TRAVIS_COMMIT .
-- docker login -u ritapaiva -p $DOCKERHUB_PASSWORD
-- docker push ritapaiva/todo-app:$TRAVIS_COMMIT
-- docker tag ritapaiva/todo-app:$TRAVIS_COMMIT registry.heroku.com/ritapaiva-todo-app/web
-- docker push registry.heroku.com/ritapaiva-todo-app/web
-- heroku container:release web --app ritapaiva-todo-app
+  - docker build --target production -t ritapaiva/todo-app:$TRAVIS_COMMIT .
+  - docker login -u ritapaiva -p $DOCKERHUB_PASSWORD
+  - docker push ritapaiva/todo-app:$TRAVIS_COMMIT
+  - docker tag ritapaiva/todo-app:$TRAVIS_COMMIT registry.heroku.com/ritapaiva-todo-app/web
+  - docker push registry.heroku.com/ritapaiva-todo-app/web
+  - heroku container:release web --app ritapaiva-todo-app
 jobs:
   if: type = pull_request
 notifications:
