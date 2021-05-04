@@ -13,16 +13,19 @@ script:
   - docker run --env-file .env.test todo-app-test:test test/test_client.py
   - docker run -e TRELLO_KEY=$TRELLO_KEY -e TOKEN=$TOKEN -e SECRET_KEY=$SECRET_KEY todo-app-test:test
   test/test_app.py
-after_script:
+before_deploy:
   - docker build --target production -t ritapaiva/todo-app:$TRAVIS_COMMIT .
   - docker login -u ritapaiva -p $DOCKERHUB_PASSWORD
   - docker push ritapaiva/todo-app:$TRAVIS_COMMIT
   - docker tag ritapaiva/todo-app:$TRAVIS_COMMIT registry.heroku.com/ritapaiva-todo-app/web
   - docker push registry.heroku.com/ritapaiva-todo-app/web
-  - heroku container:release web --app ritapaiva-todo-app
-branches:
-  only:
-  - master
+
+deploy:
+  provider: script
+  script: heroku container:release web --app ritapaiva-todo-app
+  on:
+    branch: master
+
 jobs:
   if: type = pull_request
 notifications:
