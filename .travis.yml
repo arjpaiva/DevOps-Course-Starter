@@ -23,8 +23,8 @@ before_deploy:
 deploy:
   provider: script
   script: heroku container:release web --app ritapaiva-todo-app
-  on:
-    branch: master
+#  on:
+#    branch: master
 
 jobs:
   if: type = pull_request
