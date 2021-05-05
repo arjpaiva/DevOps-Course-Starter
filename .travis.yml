@@ -11,8 +11,7 @@ script:
   - docker build --target test -t todo-app-test:test .
   - docker run --env-file .env.test todo-app-test:test test/test_view_model.py
   - docker run --env-file .env.test todo-app-test:test test/test_client.py
-  - docker run -e TRELLO_KEY=$TRELLO_KEY -e TOKEN=$TOKEN -e SECRET_KEY=$SECRET_KEY todo-app-test:test
-  test/test_app.py
+  - docker run -e TRELLO_KEY=$TRELLO_KEY -e TOKEN=$TOKEN -e SECRET_KEY=$SECRET_KEY todo-app-test:test test/test_app.py
 after_script:
   - docker build --target production -t ritapaiva/todo-app:$TRAVIS_COMMIT .
   - docker login -u ritapaiva -p $DOCKERHUB_PASSWORD
