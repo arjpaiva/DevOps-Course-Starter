@@ -35,8 +35,7 @@ RUN LATEST=`curl -sSL https://chromedriver.storage.googleapis.com/LATEST_RELEASE
     apt-get install unzip -y && \
     unzip ./chromedriver_linux64.zip
 
-ENV PATH="./chromedriver:${PATH}"
-
+ENV PATH="${PATH}:/app"
 RUN poetry install
 
 ENTRYPOINT ["poetry", "run", "pytest"]
