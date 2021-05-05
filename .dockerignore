@@ -4,7 +4,5 @@
 .env.test
 .gitignore
 Vagrantfile
-test
-test_e2e
 .vagrant
 .vscode

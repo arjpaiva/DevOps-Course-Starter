@@ -151,3 +151,24 @@ or by using docker-compose
 ```bash
 $ docker-compose -f docker-compose.prod.yml up
 ```
+
+####Docker - test environment
+Build the test image:
+```bash
+$ docker build --target test -t todo-app-test:test .
+```
+
+Run the test image - unit test:
+```bash
+$ docker run --env-file .env todo-app-test:test test/test_view_model.py
+```
+
+Run the test image - integration test:
+```bash
+$ docker run --env-file .env todo-app-test:test test/test_client.py
+```
+
+Run the test image - end to end test:
+```bash
+$ docker run -e TRELLO_KEY=<trello_key> -e TOKEN=<token> -e SECRET_KEY=<secret_key> todo-app-test:test test/test_app.py
+```
