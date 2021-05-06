@@ -28,8 +28,6 @@ deploy:
   script: heroku container:release web --app ritapaiva-todo-app
   on:
     branch: master
-jobs:
-  if: type = pull_request
 notifications:
   slack:
     secure: CCTUU/yO9/o7ZsJG53jf0UwJ2UgdLY+NohQszyPKH2Vrb9TdShYES/Rx5jiFIUbunoGAKuU2VAYkjYh+zu1E9hWe3Dm74/Fl+meUV01c9yZVR97UmocbPEpzVd0d46srHUTBSBhU4bED4/E3raIYnzSd4hGi9iNC1ywKaofudDVbKULRibQ1gvZ1sFCgiC6fS+eI0FMC9guRrJDNla1ISgOC4kaZRQl5L6F0EYVxyA6SU37jrFbXkEK54hqtFrG8eM+OqsnxETQV+8eceyvTf8vgQmX3uZXyhPpplemBkFZYB+YHQK+M4OUak7B7+kiBvH4gFoo9qTanajhvrvWVsKAhzVlm7JjeeFF+8exzqZIrqOKo0hbLE+ttf54ta8ZqGSN0aMiniAjN4oa+hg9vFRT0mPaXZdX40mtcPyMnaoMrLQ3WG6qHeTe7KldAVWajktJXg8g9bAVe3bGVLHftZsKoKLBMFmT1jDZDmOweSZLwN0y/TSzMGuvKlKabDOv3lFq55vMhbdkuK+eJucd8j8DOc4CcwB91TeUiduxlzASs8OBosWhfep7iCAjYzhSl6XLEhfW8IZwrpNsPyvGDAbzO9RlCLSfj/r1NBuZt1S5i+n0vY8ygKk/p+/oHIIHu5Pv8RyhyvTygJ+Xi3WVD2hpVQ2/P7Irs115w2Fa9xBY=
