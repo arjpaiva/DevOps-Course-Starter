@@ -10,6 +10,8 @@ FROM base as production
 EXPOSE 8000
 COPY . /app
 
+RUN poetry config virtualenvs.create false --local && poetry install
+
 ENTRYPOINT ["/bin/bash", "start_project_production.sh"]
 
 #development
