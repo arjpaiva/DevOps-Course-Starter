@@ -129,7 +129,7 @@ def test_recent_done_items_when_more_than_5(done_items: List[Card]):
 
 
 def test_older_done_items_when_equal_5(done_items: List[Card]):
-    done_items.append(Card(5, "asdasd", Status.DONE, (datetime.today() - timedelta(days=2)).strftime(DATE_TIME_FORMAT)))
+    done_items.append(Card(5, "asdasd", Status.DONE, (datetime.today() - timedelta(days=2))))
     view_model = ViewModel(done_items)
     actual_items = view_model.older_done_items()
     assert len(actual_items) == 0

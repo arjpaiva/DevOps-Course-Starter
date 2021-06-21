@@ -1,7 +1,7 @@
 import os
 import app
 import pytest
-import trello_service
+import board_repository as repo
 from card import Status
 from dotenv import load_dotenv, find_dotenv
 from selenium import webdriver
@@ -25,16 +25,7 @@ def new_board():
     load_dotenv(file_path, override=True)
 
     # Create the new board & update the board id environment variable
-    board_id = trello_service.create_board('selenium')
-    os.environ['BOARD_ID'] = board_id
-
-    lists = trello_service.get_lists_per_board()
-    if lists is None:
-        return
-
-    os.environ['TODO_LIST_ID'] = lists[Status.TODO]
-    os.environ['DOING_LIST_ID'] = lists[Status.DOING]
-    os.environ['DONE_LIST_ID'] = lists[Status.DONE]
+    os.environ['DATABASE_NAME'] = 'selenium'
 
     # construct the new application
     application = app.create_app()
@@ -47,7 +38,7 @@ def new_board():
 
     # Tear Down
     thread.join(1)
-    trello_service.delete_board()
+    repo.delete_all_cards()
 
 
 def test_item_journey(driver, new_board):

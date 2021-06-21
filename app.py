@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for
-import trello_service as trello
 import logging
 from view_model import ViewModel
 from card import Status
+import board_repository as repo
 
 
 def create_app():
@@ -15,6 +15,7 @@ def create_app():
 
     @app.route('/')
     def index():
+        repo.get_cards()
         cards = get_and_sort_cards_by_status()
         view_model = ViewModel(cards)
         return render_template('index.html', view_model=view_model,
@@ -47,29 +48,28 @@ def create_app():
                                        status_todo=Status.TODO,
                                        status_doing=Status.DOING)
 
-        trello.create_card(title)
+        repo.create_card(title)
         return redirect('/')
 
     @app.route('/<card_id>', methods=['POST'])
     def move_state(card_id):
-        trello.update_card(card_id)
+        repo.update_card(card_id)
         return redirect(url_for('index'))
 
     @app.route('/<card_id>/delete', methods=['POST'])
     @app.route('/<card_id>', methods=['DELETE'])
     def delete_item(card_id):
-        trello.delete_card(card_id)
+        repo.delete_card(card_id)
         return redirect(url_for('index'))
 
     @app.route('/', methods=['DELETE'])
     @app.route('/delete', methods=['POST'])
     def delete_all_items():
-        trello.archive_all_card()
-
+        repo.delete_all_cards()
         return redirect(url_for('index'))
 
     def get_and_sort_cards_by_status():
-        cards = trello.get_cards()
+        cards = repo.get_cards()
         cards.sort(key=get_status)
         return cards
 

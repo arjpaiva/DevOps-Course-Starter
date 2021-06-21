@@ -47,7 +47,7 @@ class ViewModel:
 
         items_completed_today = []
         for item in items:
-            if datetime.today().date() == item.last_modified.date():
+            if datetime.today().date() == force_value_into_date(item.last_modified):
                 items_completed_today.append(item)
 
         return items_completed_today
@@ -60,7 +60,11 @@ class ViewModel:
 
         items_completed_today = []
         for item in items:
-            if datetime.today().date() > item.last_modified.date():
+            if datetime.today().date() > force_value_into_date(item.last_modified):
                 items_completed_today.append(item)
 
         return items_completed_today
+
+
+def force_value_into_date(value_to_convert):
+    return datetime.strptime(value_to_convert, '%Y-%m-%dT%H:%M:%S.%fZ').date()
